@@ -100,8 +100,9 @@ transform = T.Compose([
     T.ToTensor(),
     T.Normalize([0.485,0.456,0.406],[0.229,0.224,0.225])]
 )
-image_dir = './datasets/vintext/test_image/'
+image_dir = '/kaggle/input/dsc-images/training-images'
 dir = os.listdir(image_dir)
+need = []
 for idx, i in enumerate(dir):
     image = Image.open(image_dir + i).convert('RGB')
     image, _ = transform(image,None)
@@ -126,4 +127,6 @@ for idx, i in enumerate(dir):
         'image_id': idx,
         'beziers': output['beziers'][select_mask],
     }
-    vslzr.visualize(image, pred_dict, savedir='vis_fin_vin')
+    print(idx)
+    need.append(pred_dict)
+torch.save(need)
