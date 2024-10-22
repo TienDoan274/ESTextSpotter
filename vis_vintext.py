@@ -126,9 +126,10 @@ for image_path in tqdm(dir):
             if i:
                 recs.append(r)
         print(file_name,recs)
-        if file_name.endswith('_.png'):
-            image_text.append(recs[0] + '\n')
-        else:
-            image_text.append(recs[0])
+        if (recs):
+            if file_name.endswith('_.png'):
+                image_text.append(recs[0] + '\n')
+            else:
+                image_text.append(recs[0])
     texts[image_path]=(' '.join(image_text))
 torch.save(texts,'/kaggle/working/texts2000.pt')
