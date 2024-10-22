@@ -110,7 +110,7 @@ for image_path in tqdm(dir):
     image_text = []
     img_path = os.path.join(image_dir, image_path)
     file_list = sorted(os.listdir(img_path), key=extract_number)
-
+    print(image_path)
     for idx, file_name in enumerate(file_list):
         box_path = os.path.join(img_path, file_name)
         image = Image.open(box_path).convert('RGB')
