@@ -104,7 +104,7 @@ image_dir = '/kaggle/input/dsc-images/training-images/train-images'
 dir = os.listdir(image_dir)
 need = []
 for idx, i in enumerate(dir):
-    image = Image.open(image_dir + i).convert('RGB')
+    image = Image.open(image_dir +"/"+ i).convert('RGB')
     image, _ = transform(image,None)
     output = model(image[None].cuda())
     output = postprocessors['bbox'](output, torch.Tensor([[1.0, 1.0]]))[0]
