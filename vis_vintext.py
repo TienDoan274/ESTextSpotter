@@ -125,6 +125,7 @@ for image_path in tqdm(dir):
         for i,r in zip(select_mask,rec):
             if i:
                 recs.append(r)
+        print(file_name,recs)
         if file_name.endswith('_.png'):
             image_text.append(recs[0] + '\n')
         else:
