@@ -87,7 +87,7 @@ def build_model_main(args):
     return model, criterion, postprocessors
 
 model_config_path = "config/ESTS/ESTS_5scale_vintext_finetune.py" # change the path of the model config file
-model_checkpoint_path = "vintext_checkpoint.pth" # change the path of the model checkpoint
+model_checkpoint_path = "/kaggle/input/vintext_textspotteres/pytorch/default/1/vintext_checkpoint.pth" # change the path of the model checkpoint
 
 args = SLConfig.fromfile(model_config_path) 
 model, criterion, postprocessors = build_model_main(args)
