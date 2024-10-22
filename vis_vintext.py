@@ -101,7 +101,7 @@ transform = T.Compose([
     T.Normalize([0.485,0.456,0.406],[0.229,0.224,0.225])]
 )
 image_dir = '/kaggle/input/dsc-images/training-images/train-images'
-dir = os.listdir(image_dir)[:5000]
+dir = os.listdir(image_dir)[:1900]
 need = []
 for idx, i in enumerate(dir):
     image = Image.open(image_dir +"/"+ i).convert('RGB')
@@ -129,4 +129,4 @@ for idx, i in enumerate(dir):
     }
     print(idx)
     need.append(pred_dict)
-torch.save(need,'/kaggle/working/tien.pt')
+torch.save(need,'/kaggle/working/tien1900.pt')
