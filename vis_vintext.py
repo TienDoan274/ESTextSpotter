@@ -101,7 +101,7 @@ transform = T.Compose([
     T.Normalize([0.485,0.456,0.406],[0.229,0.224,0.225])]
 )
 image_dir = '/kaggle/input/dsc-images/training-images/train-images'
-dir = os.listdir(image_dir)
+dir = os.listdir(image_dir)[:5000]
 need = []
 for idx, i in enumerate(dir):
     image = Image.open(image_dir +"/"+ i).convert('RGB')
