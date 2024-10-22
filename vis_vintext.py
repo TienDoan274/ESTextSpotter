@@ -100,33 +100,34 @@ transform = T.Compose([
     T.ToTensor(),
     T.Normalize([0.485,0.456,0.406],[0.229,0.224,0.225])]
 )
-image_dir = '/kaggle/input/dsc-images/training-images/train-images'
-dir = os.listdir(image_dir)[:1900]
-need = []
-for idx, i in enumerate(dir):
-    image = Image.open(image_dir +"/"+ i).convert('RGB')
-    image, _ = transform(image,None)
-    output = model(image[None].cuda())
-    output = postprocessors['bbox'](output, torch.Tensor([[1.0, 1.0]]))[0]
-    rec = [_decode_recognition(i) for i in output['rec']]
-    thershold = 0.3 # set a thershold
-    scores = output['scores']
-    labels = output['labels']
-    boxes = box_ops.box_xyxy_to_cxcywh(output['boxes'])
-    select_mask = scores > thershold
-    recs = []
-    for i,r in zip(select_mask,rec):
-        if i:
-            recs.append(r)
-    vslzr = COCOVisualizer()
-    # box_label = ['text' for item in rec[select_mask]]
-    pred_dict = {
-        'boxes': boxes[select_mask],
-        'size': torch.tensor([image.shape[1],image.shape[2]]),
-        'box_label': recs,
-        'image_id': idx,
-        'beziers': output['beziers'][select_mask],
-    }
-    print(idx)
-    need.append(pred_dict)
-torch.save(need,'/kaggle/working/tien1900.pt')
+image_dir = '/kaggle/working/td_images3'[:2000]
+dir = os.listdir(image_dir)
+def extract_number(file_name):
+    return int(file_name.split('.')[0].rstrip('_'))
+from tqdm import tqdm
+texts = {}
+for image_path in tqdm(dir):
+    image_text = []
+    img_path = os.path.join(image_dir, image_path)
+    file_list = sorted(os.listdir(img_path), key=extract_number)
+
+    for idx, file_name in enumerate(file_list):
+        box_path = os.path.join(img_path, file_name)
+        image = Image.open(box_path).convert('RGB')
+        image, _ = transform(image,None)
+        output = model(image[None].cuda())
+        output = postprocessors['bbox'](output, torch.Tensor([[1.0, 1.0]]))[0]
+        rec = [_decode_recognition(i) for i in output['rec']]
+        thershold = 0.3 # set a thershold
+        scores = output['scores']
+        select_mask = scores > thershold
+        recs = []
+        for i,r in zip(select_mask,rec):
+            if i:
+                recs.append(r)
+        if file_name.endswith('_.png'):
+            image_text.append(recs[0] + '\n')
+        else:
+            image_text.append(recs[0])
+    texts[image_path]=(' '.join(image_text))
+torch.save(texts,'/kaggle/working/texts2000.pt')
