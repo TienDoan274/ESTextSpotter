@@ -91,12 +91,12 @@ model_checkpoint_path = "/kaggle/input/vintext_textspotteres/pytorch/default/1/v
 
 args = SLConfig.fromfile(model_config_path) 
 model, criterion, postprocessors = build_model_main(args)
-checkpoint = torch.load(model_checkpoint_path, map_location='cpu')
+checkpoint = torch.load(model_checkpoint_path, map_location='cuda')
 model.load_state_dict(checkpoint['model'])
 model.eval()
 model.cuda()
 transform = T.Compose([
-    T.RandomResize([1000],max_size=1824),
+    T.RandomResize([800],max_size=1024),
     T.ToTensor(),
     T.Normalize([0.485,0.456,0.406],[0.229,0.224,0.225])]
 )
