@@ -96,7 +96,7 @@ model.load_state_dict(checkpoint['model'])
 model.eval()
 model.cuda()
 transform = T.Compose([
-    T.RandomResize([800],max_size=1024),
+    # T.RandomResize([800],max_size=1024),
     T.ToTensor(),
     T.Normalize([0.485,0.456,0.406],[0.229,0.224,0.225])]
 )
@@ -129,4 +129,4 @@ for idx, i in enumerate(dir):
     }
     print(idx)
     need.append(pred_dict)
-torch.save(need)
+torch.save(need,'/kaggle/working/tien.pt')
