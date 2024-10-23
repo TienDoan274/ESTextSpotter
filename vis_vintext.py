@@ -109,27 +109,21 @@ texts = {}
 for image_path in tqdm(dir):
     image_text = []
     img_path = os.path.join(image_dir, image_path)
-    file_list = sorted(os.listdir(img_path), key=extract_number)
-    print(image_path)
-    for idx, file_name in enumerate(file_list):
-        box_path = os.path.join(img_path, file_name)
-        image = Image.open(box_path).convert('RGB')
-        image, _ = transform(image,None)
-        output = model(image[None].cuda())
-        output = postprocessors['bbox'](output, torch.Tensor([[1.0, 1.0]]))[0]
-        rec = [_decode_recognition(i) for i in output['rec']]
-        thershold = 0.3 # set a thershold
-        scores = output['scores']
-        select_mask = scores > thershold
-        recs = []
-        for i,r in zip(select_mask,rec):
-            if i:
-                recs.append(r)
-        print(file_name,recs)
-        if (recs):
-            if file_name.endswith('_.png'):
-                image_text.append(recs[0] + '\n')
-            else:
-                image_text.append(recs[0])
-    texts[image_path]=(' '.join(image_text))
+    
+    
+    image = Image.open(img_path).convert('RGB')
+    image, _ = transform(image,None)
+    output = model(image[None].cuda())
+    output = postprocessors['bbox'](output, torch.Tensor([[1.0, 1.0]]))[0]
+    rec = [_decode_recognition(i) for i in output['rec']]
+    thershold = 0.3 # set a thershold
+    scores = output['scores']
+    select_mask = scores > thershold
+    recs = []
+    for i,r in zip(select_mask,rec):
+        if i:
+            recs.append(r)
+    print(img_path,recs)
+    if (recs):
+        texts[image_path]=(' ' .join(recs))
 torch.save(texts,'/kaggle/working/texts2000.pt')
