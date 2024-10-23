@@ -100,8 +100,8 @@ transform = T.Compose([
     T.ToTensor(),
     T.Normalize([0.485,0.456,0.406],[0.229,0.224,0.225])]
 )
-image_dir = '/kaggle/working/td_images3'
-dir = os.listdir(image_dir)[:2000]
+image_dir = '/kaggle/input/dsc-images/public-test-images/dev-images'
+dir = os.listdir(image_dir)
 def extract_number(file_name):
     return int(file_name.split('.')[0].rstrip('_'))
 from tqdm import tqdm
